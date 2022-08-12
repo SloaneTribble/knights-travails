@@ -10,23 +10,25 @@ const gameBoard = function generateBoardCoords() {
   return coords;
 };
 
-// Attempt to treat knight as a node which stores its current location
+// Attempt to treat knight as a node which stores its current location and possible moves
 
 const knight = function knightNode(coord = null) {
   const knight = {};
 
   knight.coord = coord;
 
-  // Maximum eight possible moves for any given coordinate
+  let possible = possibleMoves(coord);
 
-  knight.tl1 = null;
-  knight.tl2 = null;
-  knight.tr1 = null;
-  knight.tr2 = null;
-  knight.br1 = null;
-  knight.br2 = null;
-  knight.bl1 = null;
-  knight.bl2 = null;
+  for (let move in possible) {
+    let currentMove = possible[move];
+    let propName = `move${move}`;
+
+    knight[`${propName}`] = currentMove;
+  }
+
+  // Maximum eight possible moves for any given coordinate, can be assigned on the spot
+
+  return knight;
 };
 
 // Given a coordinate, generate a list of the immediate possible moves (up to 8)
@@ -61,4 +63,22 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-export { possibleMoves };
+const findPath = function generateAllPossiblePaths(coord, dest) {
+  let visitedLocations = [];
+
+  let currentPossibilities = possibleMoves(coord);
+
+  if (currentPossibilities.containsArray(dest)) {
+    return "Path found!";
+  }
+};
+
+Array.prototype.containsArray = function (val) {
+  let hash = {};
+  for (let i = 0; i < this.length; i++) {
+    hash[this[i]] = i;
+  }
+  return hash.hasOwnProperty(val);
+};
+
+export { possibleMoves, knight, findPath };
