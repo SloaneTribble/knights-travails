@@ -17,15 +17,6 @@ const knight = function knightNode(coord = null) {
 
   knight.coord = coord;
 
-  let possible = possibleMoves(coord);
-
-  for (let move in possible) {
-    let currentMove = possible[move];
-    let propName = `move${move}`;
-
-    knight[`${propName}`] = currentMove;
-  }
-
   // Maximum eight possible moves for any given coordinate, can be assigned on the spot
 
   return knight;
@@ -63,18 +54,40 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-const findPath = function generateAllPossiblePaths(knight, dest, visited = []) {
+const findPath = function generateAllPossiblePaths(
+  knightNode,
+  dest,
+  visited = []
+) {
   let visitedLocations = visited;
-  let coord = knight.coord;
+  let coord = knightNode.coord;
   let currentPossibilities = possibleMoves(coord);
-  let filteredPossibilities = [];
+  visitedLocations.push(coord);
 
   if (currentPossibilities.containsArray(dest)) {
-    return "Path found!";
+    console.log(visitedLocations);
+    return visitedLocations;
   }
-  //
+  // Else, remove visited locations from possible next moves
 
-  // For each possible coordinate, create a node and connect it to current knight node
+  currentPossibilities = removeVisited(currentPossibilities, visitedLocations);
+
+  // For each possible coordinate, create a node and connect it to current knightNode node
+
+  for (const move in currentPossibilities) {
+    let currentMove = currentPossibilities[move];
+    let propName = `move${move}`;
+    if (!propName.includes("Array") && !propName.includes("coord"))
+      knightNode[`${propName}`] = knight(currentMove);
+  }
+
+  // For each child node of the current knightNode, call findPath with updated visited locations
+
+  for (const move in knightNode) {
+    if (knightNode[move].coord) {
+      findPath(knightNode[move], dest, visitedLocations);
+    }
+  }
 };
 
 const removeVisited = function compareTwoNestedArrays(
@@ -83,7 +96,7 @@ const removeVisited = function compareTwoNestedArrays(
 ) {
   let filtered = [];
 
-  for (let coord of possibleCoords) {
+  for (const coord of possibleCoords) {
     if (!visitedCoords.containsArray(coord)) {
       filtered.push(coord);
     }
@@ -99,5 +112,9 @@ Array.prototype.containsArray = function (val) {
   }
   return hash.hasOwnProperty(val);
 };
+
+let knightMan = knight([0, 0]);
+
+console.log(findPath(knightMan, [3, 2]));
 
 export { possibleMoves, knight, findPath, removeVisited };

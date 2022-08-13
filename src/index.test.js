@@ -9,13 +9,6 @@ test("possibleMoves will not generate out-of-bounds moves", () => {
   ]);
 });
 
-test("A generated knight will have a property representing its possible moves", () => {
-  const knightMan = knight([0, 0]);
-
-  expect(knightMan.move0).toStrictEqual([1, 2]);
-  expect(knightMan.move1).toStrictEqual([2, 1]);
-});
-
 test("findPath will correctly detect a path of length 1", () => {
   const knightMan = knight([0, 0]);
 
@@ -38,3 +31,5 @@ test("removeVisited will remove correct coordinates from an array", () => {
 
   expect(filtered).toStrictEqual([[0,0],[2,1]]);
 });
+
+
