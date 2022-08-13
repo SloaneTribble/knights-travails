@@ -1,4 +1,4 @@
-import { possibleMoves, knight, findPath, removeVisited } from "./index";
+import { possibleMoves, knight, findPath } from "./index";
 
 test("possibleMoves will not generate out-of-bounds moves", () => {
   const moves = possibleMoves([0, 0]);
@@ -29,7 +29,8 @@ test("removeVisited will remove correct coordinates from an array", () => {
 
   let filtered = removeVisited(possibleCoords, visited);
 
-  expect(filtered).toStrictEqual([[0,0],[2,1]]);
+  expect(filtered).toStrictEqual([
+    [0, 0],
+    [2, 1],
+  ]);
 });
-
-

@@ -64,28 +64,31 @@ const findPath = function generateAllPossiblePaths(
   let currentPossibilities = possibleMoves(coord);
   visitedLocations.push(coord);
 
-  if (currentPossibilities.containsArray(dest)) {
-    console.log(visitedLocations);
-    return visitedLocations;
-  }
-  // Else, remove visited locations from possible next moves
-
   currentPossibilities = removeVisited(currentPossibilities, visitedLocations);
 
-  // For each possible coordinate, create a node and connect it to current knightNode node
+  if (
+    currentPossibilities.containsArray(dest) ||
+    visitedLocations.containsArray(dest)
+  ) {
+    visitedLocations.push(dest);
+    console.log(visitedLocations);
+    return;
+  } else {
+    // For each possible coordinate, create a node and connect it to current knightNode
 
-  for (const move in currentPossibilities) {
-    let currentMove = currentPossibilities[move];
-    let propName = `move${move}`;
-    if (!propName.includes("Array") && !propName.includes("coord"))
-      knightNode[`${propName}`] = knight(currentMove);
-  }
+    for (const move in currentPossibilities) {
+      let currentMove = currentPossibilities[move];
+      let propName = `move${move}`;
+      if (!propName.includes("Array") && !propName.includes("coord"))
+        knightNode[`${propName}`] = knight(currentMove);
+    }
 
-  // For each child node of the current knightNode, call findPath with updated visited locations
+    // For each child node of the current knightNode, call findPath with updated visited locations
 
-  for (const move in knightNode) {
-    if (knightNode[move].coord) {
-      findPath(knightNode[move], dest, visitedLocations);
+    for (const move in knightNode) {
+      if (knightNode[move].coord) {
+        findPath(knightNode[move], dest, visitedLocations);
+      }
     }
   }
 };
@@ -115,6 +118,6 @@ Array.prototype.containsArray = function (val) {
 
 let knightMan = knight([0, 0]);
 
-console.log(findPath(knightMan, [3, 2]));
+console.log(findPath(knightMan, [4, 3]));
 
 export { possibleMoves, knight, findPath, removeVisited };
