@@ -41,7 +41,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "findPath": () => (/* binding */ findPath),
 /* harmony export */   "knight": () => (/* binding */ knight),
-/* harmony export */   "possibleMoves": () => (/* binding */ possibleMoves)
+/* harmony export */   "possibleMoves": () => (/* binding */ possibleMoves),
+/* harmony export */   "removeVisited": () => (/* binding */ removeVisited)
 /* harmony export */ });
 const gameBoard = function generateBoardCoords() {
   let coords = [];
@@ -108,14 +109,33 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-const findPath = function generateAllPossiblePaths(coord, dest) {
-  let visitedLocations = [];
-
+const findPath = function generateAllPossiblePaths(knight, dest, visited = []) {
+  let visitedLocations = visited;
+  let coord = knight.coord;
   let currentPossibilities = possibleMoves(coord);
+  let filteredPossibilities = [];
 
   if (currentPossibilities.containsArray(dest)) {
     return "Path found!";
   }
+  //
+
+  // For each possible coordinate, create a node and connect it to current knight node
+};
+
+const removeVisited = function compareTwoNestedArrays(
+  possibleCoords,
+  visitedCoords
+) {
+  let filtered = [];
+
+  for (let coord of possibleCoords) {
+    if (!visitedCoords.containsArray(coord)) {
+      filtered.push(coord);
+    }
+  }
+
+  return filtered;
 };
 
 Array.prototype.containsArray = function (val) {

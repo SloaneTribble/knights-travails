@@ -63,14 +63,33 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-const findPath = function generateAllPossiblePaths(coord, dest) {
-  let visitedLocations = [];
-
+const findPath = function generateAllPossiblePaths(knight, dest, visited = []) {
+  let visitedLocations = visited;
+  let coord = knight.coord;
   let currentPossibilities = possibleMoves(coord);
+  let filteredPossibilities = [];
 
   if (currentPossibilities.containsArray(dest)) {
     return "Path found!";
   }
+  //
+
+  // For each possible coordinate, create a node and connect it to current knight node
+};
+
+const removeVisited = function compareTwoNestedArrays(
+  possibleCoords,
+  visitedCoords
+) {
+  let filtered = [];
+
+  for (let coord of possibleCoords) {
+    if (!visitedCoords.containsArray(coord)) {
+      filtered.push(coord);
+    }
+  }
+
+  return filtered;
 };
 
 Array.prototype.containsArray = function (val) {
@@ -81,4 +100,4 @@ Array.prototype.containsArray = function (val) {
   return hash.hasOwnProperty(val);
 };
 
-export { possibleMoves, knight, findPath };
+export { possibleMoves, knight, findPath, removeVisited };
