@@ -61,6 +61,8 @@ const knight = function knightNode(coord = null) {
 
   knight.coord = coord;
 
+  knight.map = [];
+
   // Maximum eight possible moves for any given coordinate, can be assigned on the spot
 
   return knight;
@@ -100,6 +102,7 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
 
 const knightMoves = function findPath(knightNode, destination) {
   let coord = knightNode.coord;
+  knightNode.map.push(coord);
   let queue = [];
   let found = false;
 
@@ -111,22 +114,31 @@ const knightMoves = function findPath(knightNode, destination) {
 
     for (let move in possibleNextMoves) {
       let newKnight = knight(possibleNextMoves[move]);
+      let prevMap = knightNode.map;
+      for (coord of prevMap) {
+        newKnight.map.push(coord);
+      }
       knightNode[`node${move}`] = newKnight;
       queue.push(newKnight);
     }
     while (found === false) {
       let currentNode = queue.shift();
       coord = currentNode.coord;
+      currentNode.map.push(coord);
 
       if (coord[0] === destination[0] && coord[1] === destination[1]) {
         found = true;
-        console.log(currentNode);
+        console.log(currentNode.map);
       } else {
         possibleNextMoves = possibleMoves(coord);
 
         for (let move in possibleNextMoves) {
           let newKnight = knight(possibleNextMoves[move]);
-          knightNode[`node${move}`] = newKnight;
+          let prevMap = currentNode.map;
+          for (coord of prevMap) {
+            newKnight.map.push(coord);
+          }
+          currentNode[`node${move}`] = newKnight;
           queue.push(newKnight);
         }
       }
@@ -134,32 +146,9 @@ const knightMoves = function findPath(knightNode, destination) {
   }
 };
 
-// const removeVisited = function compareTwoNestedArrays(
-//   possibleCoords,
-//   visitedCoords
-// ) {
-//   let filtered = [];
-
-//   for (const coord of possibleCoords) {
-//     if (!visitedCoords.containsArray(coord)) {
-//       filtered.push(coord);
-//     }
-//   }
-
-//   return filtered;
-// };
-
-// Array.prototype.containsArray = function (val) {
-//   let hash = {};
-//   for (let i = 0; i < this.length; i++) {
-//     hash[this[i]] = i;
-//   }
-//   return hash.hasOwnProperty(val);
-// };
-
 const newKnight = knight([0, 0]);
 
-knightMoves(newKnight, [2, 4]);
+knightMoves(newKnight, [1, 0]);
 
 
 
