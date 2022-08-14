@@ -1,4 +1,16 @@
-// Attempt to treat knight as a node which stores its current location and possible moves
+/**
+ * The goal of this program is to determine the shortest path for a knight to travel from one spot to another on a chess board:
+
+Given a knight node:
+  1. Compare that node's coordinates to the destination coordinates
+  2. If the coordinates match, a path has been found, and the program logs the coordinates which have been visited
+  3. If the coordinates don't match, determine the next possible moves
+  4. Use each possible move to generate a new node, and assign each node as a child of the given knight node
+  5. Push each new node to the queue
+  6. Dequeue a node, repeat steps 1-5
+ */
+
+// Treat knight as a node which stores its current location and possible moves
 
 const knight = function knightNode(coord = null) {
   const knight = {};
