@@ -66,17 +66,9 @@ const knightMoves = function findPath(knightNode, destination) {
     found = true;
     return;
   } else {
-    let possibleNextMoves = possibleMoves(coord);
+    
+    generateNextSpots(knightNode, coord, queue);
 
-    for (let move in possibleNextMoves) {
-      let newKnight = knight(possibleNextMoves[move]);
-      let prevMap = knightNode.map;
-      for (coord of prevMap) {
-        newKnight.map.push(coord);
-      }
-      knightNode[`node${move}`] = newKnight;
-      queue.push(newKnight);
-    }
     while (found === false) {
       let currentNode = queue.shift();
       coord = currentNode.coord;
@@ -86,24 +78,32 @@ const knightMoves = function findPath(knightNode, destination) {
         found = true;
         console.log(currentNode.map);
       } else {
-        possibleNextMoves = possibleMoves(coord);
-
-        for (let move in possibleNextMoves) {
-          let newKnight = knight(possibleNextMoves[move]);
-          let prevMap = currentNode.map;
-          for (coord of prevMap) {
-            newKnight.map.push(coord);
-          }
-          currentNode[`node${move}`] = newKnight;
-          queue.push(newKnight);
-        }
+        generateNextSpots(currentNode, coord, queue);
       }
     }
   }
 };
 
+const generateNextSpots = function findNewMovesAndMakeNodes(
+  currentNode,
+  coord,
+  queue
+) {
+  let possibleNextMoves = possibleMoves(coord);
+
+  for (let move in possibleNextMoves) {
+    let newKnight = knight(possibleNextMoves[move]);
+    let prevMap = currentNode.map;
+    for (coord of prevMap) {
+      newKnight.map.push(coord);
+    }
+    currentNode[`node${move}`] = newKnight;
+    queue.push(newKnight);
+  }
+};
+
 const newKnight = knight([0, 0]);
 
-knightMoves(newKnight, [1, 0]);
+knightMoves(newKnight, [7, 7]);
 
 export { possibleMoves, knight };
