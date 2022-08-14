@@ -40,7 +40,6 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "knight": () => (/* binding */ knight),
-/* harmony export */   "moveTree": () => (/* binding */ moveTree),
 /* harmony export */   "possibleMoves": () => (/* binding */ possibleMoves),
 /* harmony export */   "removeVisited": () => (/* binding */ removeVisited)
 /* harmony export */ });
@@ -100,33 +99,24 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-const moveTree = function findPathsToDestination(knightNode, destination) {
+const knightMoves = function findPath(knightNode, destination) {
   let coord = knightNode.coord;
 
   if (coord[0] === destination[0] && coord[1] === destination[1]) {
+    found = true;
     return;
   } else {
+    let queue = [];
+    let found = false;
     let nextMoves = possibleMoves(coord);
-    let nodeArray = [];
 
-    for (let move of nextMoves) {
-      nodeArray.push(knight(move));
+    for (const move of nextMoves) {
+      queue.push(move);
     }
-
-    // For each knight in array, attach to current knight as a node
-    for (let i = 0; i < nodeArray.length; i++) {
-      let currentNode = nodeArray[i];
-      let propName = `move${i}`;
-      if (!propName.includes("Array") && !propName.includes("coord"))
-        knightNode[`${propName}`] = currentNode;
+    while (found === false) {
+      
     }
-
-    // For each node attached to current knight, find a path from it to the destination, and attach that path as a subtree
-
-    
   }
-
-  return knightNode;
 };
 
 const removeVisited = function compareTwoNestedArrays(
@@ -153,10 +143,6 @@ Array.prototype.containsArray = function (val) {
 };
 
 const newKnight = knight([0, 0]);
-
-const newTree = moveTree(newKnight, [2, 4]);
-
-console.log(newTree);
 
 
 
