@@ -46,6 +46,14 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
 
 const knightMoves = function findPath(knightNode, destination) {
   let coord = knightNode.coord;
+
+  const validCoord = valid(coord);
+  const validDest = valid(destination);
+
+  if (!validCoord || !validDest) {
+    return `Invalid input`;
+  }
+
   knightNode.map.push(coord);
   let queue = [];
   let found = false;
@@ -89,8 +97,18 @@ const generateNextSpots = function findNewMovesAndMakeNodes(
   }
 };
 
-const newKnight = knight([0, 0]);
+const valid = function checkValidity(coord) {
+  for (let i of coord) {
+    if (i < 0 || i > 7) {
+      console.log("Invalid input");
+      return false;
+    }
+  }
+  return true;
+};
 
-knightMoves(newKnight, [7, 7]);
+const newKnight = knight([7, 7]);
+
+knightMoves(newKnight, [7, 6]);
 
 export { possibleMoves, knight };
