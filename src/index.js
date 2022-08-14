@@ -1,15 +1,3 @@
-const gameBoard = function generateBoardCoords() {
-  let coords = [];
-
-  for (let i = 0; i < 8; i++) {
-    for (let j = 0; j < 8; j++) {
-      coords.push([i, j]);
-    }
-  }
-
-  return coords;
-};
-
 // Attempt to treat knight as a node which stores its current location and possible moves
 
 const knight = function knightNode(coord = null) {
@@ -66,7 +54,6 @@ const knightMoves = function findPath(knightNode, destination) {
     found = true;
     return;
   } else {
-    
     generateNextSpots(knightNode, coord, queue);
 
     while (found === false) {
