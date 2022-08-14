@@ -1,4 +1,4 @@
-import { possibleMoves, knight, findPath } from "./index";
+import { possibleMoves, knight, removeVisited } from "./index";
 
 test("possibleMoves will not generate out-of-bounds moves", () => {
   const moves = possibleMoves([0, 0]);

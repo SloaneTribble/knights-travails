@@ -54,43 +54,33 @@ const possibleMoves = function generateImmediatePossibilities(coord) {
   return acceptedMoves;
 };
 
-const findPath = function generateAllPossiblePaths(
-  knightNode,
-  dest,
-  visited = []
-) {
-  let visitedLocations = visited;
+const moveTree = function findPathsToDestination(knightNode, destination) {
   let coord = knightNode.coord;
-  let currentPossibilities = possibleMoves(coord);
-  visitedLocations.push(coord);
 
-  currentPossibilities = removeVisited(currentPossibilities, visitedLocations);
-
-  if (
-    currentPossibilities.containsArray(dest) ||
-    visitedLocations.containsArray(dest)
-  ) {
-    visitedLocations.push(dest);
-    console.log(visitedLocations);
+  if (coord[0] === destination[0] && coord[1] === destination[1]) {
     return;
   } else {
-    // For each possible coordinate, create a node and connect it to current knightNode
+    let nextMoves = possibleMoves(coord);
+    let nodeArray = [];
 
-    for (const move in currentPossibilities) {
-      let currentMove = currentPossibilities[move];
-      let propName = `move${move}`;
+    for (let move of nextMoves) {
+      nodeArray.push(knight(move));
+    }
+
+    // For each knight in array, attach to current knight as a node
+    for (let i = 0; i < nodeArray.length; i++) {
+      let currentNode = nodeArray[i];
+      let propName = `move${i}`;
       if (!propName.includes("Array") && !propName.includes("coord"))
-        knightNode[`${propName}`] = knight(currentMove);
+        knightNode[`${propName}`] = currentNode;
     }
 
-    // For each child node of the current knightNode, call findPath with updated visited locations
+    // For each node attached to current knight, find a path from it to the destination, and attach that path as a subtree
 
-    for (const move in knightNode) {
-      if (knightNode[move].coord) {
-        findPath(knightNode[move], dest, visitedLocations);
-      }
-    }
+    
   }
+
+  return knightNode;
 };
 
 const removeVisited = function compareTwoNestedArrays(
@@ -116,8 +106,10 @@ Array.prototype.containsArray = function (val) {
   return hash.hasOwnProperty(val);
 };
 
-let knightMan = knight([0, 0]);
+const newKnight = knight([0, 0]);
 
-console.log(findPath(knightMan, [4, 3]));
+const newTree = moveTree(newKnight, [2, 4]);
 
-export { possibleMoves, knight, findPath, removeVisited };
+console.log(newTree);
+
+export { possibleMoves, knight, moveTree, removeVisited };
